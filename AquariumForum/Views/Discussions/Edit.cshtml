@@ -1,0 +1,64 @@
+﻿@model AquariumForum.Models.Discussion
+
+@{
+    ViewData["Title"] = "Edit Discussion";
+}
+
+<h1>Edit Discussion</h1>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="DiscussionId" />
+            <input type="hidden" asp-for="ImagePath" />
+
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label">Title</label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Content" class="form-label">Content</label>
+                <textarea asp-for="Content" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+
+            <!-- Display Current Image -->
+            @if (!string.IsNullOrEmpty(Model.ImagePath))
+            {
+                <div class="mb-3">
+                    <label class="form-label">Current Image</label>
+                    <div>
+                        <img src="@Url.Content(Model.ImagePath)" alt="Discussion Image" class="img-fluid" style="max-width: 400px;" />
+                    </div>
+                </div>
+            }
+
+            <!-- Image Upload Field -->
+            <div class="mb-3">
+                <label class="form-label">Upload New Image (Optional)</label>
+                <input type="file" name="ImageFile" class="form-control" accept="image/*" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CreateDate" class="form-label">Date Created</label>
+                <input asp-for="CreateDate" class="form-control" readonly />
+                <span asp-validation-for="CreateDate" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

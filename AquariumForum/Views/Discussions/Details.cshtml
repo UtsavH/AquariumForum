@@ -1,0 +1,57 @@
+﻿@model AquariumForum.Models.Discussion
+
+@{
+    ViewData["Title"] = "Discussion Details";
+}
+
+<h2>@Model.Title</h2>
+
+<p>@Model.Content</p>
+<p><strong>Posted on:</strong> @Model.CreateDate.ToString("MMM dd, yyyy")</p>
+
+@if (!string.IsNullOrEmpty(Model.ImagePath))
+{
+    <div>
+        <img src="@Url.Content(Model.ImagePath)" alt="Discussion Image" class="img-fluid" style="max-width: 400px;" />
+    </div>
+}
+
+
+<hr>
+
+<h3>Comments</h3>
+
+@if (Model.Comments != null && Model.Comments.Any())
+{
+    <ul class="list-group">
+        @foreach (var comment in Model.Comments)
+        {
+            <li class="list-group-item">
+                <p>@comment.Content</p>
+                <small class="text-muted">Posted on: @comment.CreateDate.ToString("MMM dd, yyyy")</small>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No comments yet. Be the first to comment!</p>
+}
+
+<!-- Add Comment Section -->
+<hr>
+
+<h4>Add a Comment</h4>
+<form asp-controller="Comments" asp-action="Create" method="post">
+    <input type="hidden" name="DiscussionId" value="@Model.DiscussionId" />
+
+    <div class="mb-3">
+        <label for="Content" class="form-label">Your Comment</label>
+        <textarea name="Content" class="form-control" rows="4" required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<br>
+<a asp-action="Index" class="btn btn-secondary">Back to Discussions</a>
