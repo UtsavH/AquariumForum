@@ -1,4 +1,6 @@
-﻿@{
+@model List<AquariumForum.Models.Discussion>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -6,3 +8,27 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+<div class="container">
+    <div class="row">
+        @foreach (var discussion in Model)
+        {
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    @if (!string.IsNullOrEmpty(discussion.ImagePath))
+                    {
+                        <a href="@Url.Action("Details", "Discussions", new { id = discussion.DiscussionId })">
+                            <img src="@discussion.ImagePath" class="card-img-top" alt="Discussion Image">
+                        </a>
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@discussion.Title</h5>
+                        <p class="card-text">@discussion.Content.Substring(0, Math.Min(discussion.Content.Length, 100))...</p>
+                        <a href="@Url.Action("Details", "Discussions", new { id = discussion.DiscussionId })" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
